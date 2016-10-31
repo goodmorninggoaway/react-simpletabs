@@ -81,14 +81,18 @@ There are some things that you should know about the component. The first one is
 So, the semantic HTML structure will be something like this:
 
 ```html
-  <div class='tabs'>
-    <nav class='tabs-navigation'>
-      <ul class='tabs-menu'>
-        <li class='tabs-menu-item is-active'>Tab #1</li>
-        <li class='tabs-menu-item'>Tab #2</li>
+  <div class='React-SimpleTabs--tabs'>
+    <nav class='React-SimpleTabs--tabs-navigation'>
+      <ul class='React-SimpleTabs--tabs-menu'>
+        <li class='React-SimpleTabs--tabs-menu-item React-SimpleTabs--is-active'>
+          <a>Tab #1</a>
+        </li>
+        <li class='React-SimpleTabs--tabs-menu-item'>
+          <a>Tab #2</a>
+        </li>
       </ul>
     </nav>
-    <article class='tab-panel'>
+    <article class='React-SimpleTabs--tab-panel'>
       The content of active panel here
     </article>
   <div>
