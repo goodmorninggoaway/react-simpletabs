@@ -21,7 +21,8 @@ var Tabs = React.createClass({
     onAfterChange: React.PropTypes.func,
     children: React.PropTypes.oneOfType([
       React.PropTypes.node,
-      React.PropTypes.element
+      React.PropTypes.element,
+      React.PropTypes.func
     ]).isRequired
   },
   getDefaultProps () {
@@ -83,10 +84,22 @@ var Tabs = React.createClass({
 
     return React.Children.toArray(this.props.children);
   },
-  _getMenuItems () {
-    var $menuItems = this._children()
+  _childrenByType() {
+    return this._children()
       .map($panel => typeof $panel === 'function' ? $panel() : $panel)
-      .filter($panel => $panel)
+      .reduce((memo, $panel) => {
+        if ($panel.type === Tabs.Panel) {
+          memo.panels.push($panel);
+        } else if ($panel.type === Tabs.Menu) {
+          memo.contextMenus.push(React.cloneElement($panel, {tabActive: this.state.tabActive}));
+        }
+
+        return memo;
+      }, {panels: [], contextMenus: []});
+  },
+  _getMenuItems () {
+    var childrenByType = this._childrenByType();
+    var $panelItems = childrenByType.panels
       .map(($panel, index) => {
         var ref = `tab-menu-${index + 1}`;
         var title = $panel.props.title;
@@ -103,6 +116,18 @@ var Tabs = React.createClass({
           </li>
         );
       });
+
+    var $contextMenuItems = childrenByType.contextMenus
+      .map(($contextMenu, index) => {
+        var ref = `tab-context-${index + 1}`;
+        return (
+          <li ref={ref} key={`content-${index}`} className="React-SimpleTabs--tabs-context-item">
+            {$contextMenu}
+          </li>
+        );
+      });
+
+    var $menuItems = [].concat($panelItems).concat($contextMenuItems);
 
     return (
       <nav className='React-SimpleTabs--tabs-navigation'>
@@ -133,6 +158,24 @@ Tabs.Panel = React.createClass({
   },
   render () {
     return <div>{this.props.children}</div>;
+  }
+});
+
+Tabs.Menu = React.createClass({
+  displayName: 'Menu',
+  propTypes: {
+    children: React.PropTypes.oneOfType([
+      React.PropTypes.element,
+      React.PropTypes.func,
+    ]).isRequired
+  },
+  render () {
+    var child = React.Children.only(this.props.children);
+    if (typeof child === 'function') {
+      child = child({ tabActive: this.props.tabActive });
+    }
+
+    return <div>{child}</div>;
   }
 });
 

@@ -23,6 +23,12 @@ var App = React.createClass({
         <Tabs.Panel title='Tab #3'>
           <h2>Content #3</h2>
         </Tabs.Panel>
+        <Tabs.Menu>
+          <button>Search</button>
+        </Tabs.Menu>
+        <Tabs.Menu>
+          {opts => <div>Active Tab is {opts.tabActive}</div>}
+        </Tabs.Menu>
       </Tabs>
     );
   }

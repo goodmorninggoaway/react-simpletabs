@@ -54,7 +54,7 @@ describe('Tabs', function() {
       );
 
       expect(function () {
-        TU.findRenderedDOMComponentWithClass(instance, 'tabs extra-class');
+        TU.findRenderedDOMComponentWithClass(instance, 'React-SimpleTabs--tabs extra-class');
       }).not.toThrow();
     });
 
@@ -68,7 +68,7 @@ describe('Tabs', function() {
       }).toThrow();
 
       expect(function () {
-        TU.findRenderedDOMComponentWithClass(instance, 'tabs tabs2');
+        TU.findRenderedDOMComponentWithClass(instance, 'React-SimpleTabs--tabs tabs2');
       }).not.toThrow();
     });
 
@@ -78,7 +78,7 @@ describe('Tabs', function() {
       );
 
       expect(function () {
-        TU.findRenderedDOMComponentWithClass(instance, 'tabs extra-class');
+        TU.findRenderedDOMComponentWithClass(instance, 'React-SimpleTabs--tabs extra-class');
       }).not.toThrow();
 
     });
@@ -151,6 +151,37 @@ describe('Tabs', function() {
       panel = find(instance, 'React-SimpleTabs--tab-panel');
       expect(panel.children[0].innerHTML).toEqual('content1');
       expect(menuItem.children[0].innerHTML).toEqual('item1');
+    });
+
+    it('Renders Menu content after the tabs', function(){
+      var find = TU.findRenderedDOMComponentWithClass;
+      var instance = ReactDOM.render(
+        <Tabs tabActive={2}>
+          <Tabs.Panel title='item1'>content1</Tabs.Panel>
+          <Tabs.Panel title='item2'>content2</Tabs.Panel>
+          <Tabs.Menu>
+            <div className="boomboxer">Tiger</div>
+          </Tabs.Menu>
+        </Tabs>, document.body
+      );
+      var menuItem = find(instance, 'boomboxer');
+      expect(menuItem.innerHTML).toEqual('Tiger');
+    });
+
+    it('Renders FaaC in Menu after the tabs, passing current tab index', function(){
+      var find = TU.findRenderedDOMComponentWithClass;
+      var instance = ReactDOM.render(
+        <Tabs tabActive={2}>
+          <Tabs.Panel title='item1'>content1</Tabs.Panel>
+          <Tabs.Panel title='item2'>content2</Tabs.Panel>
+          <Tabs.Menu>
+            {opts => <div className="boomboxer">{opts.tabActive}</div>}
+          </Tabs.Menu>
+        </Tabs>, document.body
+      );
+
+      var menuItem = find(instance, 'boomboxer');
+      expect(menuItem.innerHTML).toEqual('2');
     });
   });
 

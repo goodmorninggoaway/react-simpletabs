@@ -3,11 +3,17 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  width: 100%;
 }
 
 .React-SimpleTabs--tabs-menu-item {
   float: left;
   margin-right: 20px;
+}
+
+.React-SimpleTabs--tabs-context-item {
+  float: right;
+  margin-left: 20px;
 }
 
 .React-SimpleTabs--tabs-menu-item a {

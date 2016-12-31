@@ -49,6 +49,9 @@ var App = React.createClass({
         <Tabs.Panel title='Tab #3'>
           <h2>Content #3 here</h2>
         </Tabs.Panel>
+        <Tabs.Menu>
+          {opts => <div>Active Tab is {opts.tabActive}</div>}
+        </Tabs.Menu>
       </Tabs>
     );
   }
@@ -74,7 +77,13 @@ Well, the `Tabs.Panel` component is a [namespaced component](http://facebook.git
 
 **NOTE:** It is required that you put the `title` property to the `Tabs.Panel` component. Without this, the component won't work, ok?
 
-## Behind the Scene
+##### `<Tabs.Menu>`
+
+Well, the `Tabs.Menu` is also a namespaced component. 
+Tabs.Menu is not required unless you need arbitrary content inline with the tabs.
+
+
+## Behind the Scenes
 
 There are some things that you should know about the component. The first one is the structure created inside by the component if you wish to stylize it.
 
@@ -89,6 +98,9 @@ So, the semantic HTML structure will be something like this:
         </li>
         <li class='React-SimpleTabs--tabs-menu-item'>
           <a>Tab #2</a>
+        </li>
+        <li class='React-SimpleTabs--tabs-context-item'>
+          <a>Active Tab is 2</a>
         </li>
       </ul>
     </nav>
@@ -162,6 +174,12 @@ onAfterChange | `Function` | n/a | no | The function that will be executed **aft
 Property | Type | Default | Required | Description
 -------- | ---- | ------- | -------- |-----------
 title | `String` | n/a | yes | The title that will generate the *tab menu items*
+
+`<Tab.Menu>` component:
+
+Property | Type | Default | Required | Description
+-------- | ---- | ------- | -------- |-----------
+children | `Element|Function` | n/a | yes | Menu content. A function will recieve a hash including tabActive
 
 ## Contributing
 
